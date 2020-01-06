@@ -11,10 +11,13 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Cell;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -33,17 +36,41 @@ public class Main extends Application {
         //button.relocate(50,100);
         HBox hbButtons = new HBox();
         hbButtons.setSpacing(10.0);
-
+        //<>
         hbButtons.getChildren().addAll(button,button2);
         root.add(hbButtons, 0, 0);
         hbButtons.setAlignment(Pos.CENTER);
         //root.add(button2, 0, 1);
         primaryStage.setScene(new Scene(root, 200, 400));
+
+        class Ruut extends StackPane{
+            private Ruut(){
+                Rectangle border= new Rectangle(200,200);
+                border.setFill(null);
+                border.setStroke(Color.BLACK);
+                setAlignment(Pos.CENTER);
+                game.getChildren().addAll(border);
+            }
+        }
+
         button.setOnAction(value ->  {
-            final Canvas canvas = new Canvas(500,500);
+            final Canvas canvas = new Canvas(600,600);
             primaryStage.setScene(new Scene(game, canvas.getWidth(), canvas.getHeight()));
             GraphicsContext gc = canvas.getGraphicsContext2D();
             game.getChildren().add(canvas);
+
+
+            for (int i = 0;i<3;i++){
+                for (int j = 0;j<3;j++){
+                    Ruut ruut=new Ruut();
+                    ruut.setTranslateX(j*200);
+                    ruut.setTranslateY(i*200);
+
+
+                    game.getChildren().add(ruut);
+                }
+            }
+
         });
         //root.getChildren().add(button);
         primaryStage.show();
