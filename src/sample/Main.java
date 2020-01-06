@@ -43,15 +43,9 @@ public class Main extends Application {
         //root.add(button2, 0, 1);
         primaryStage.setScene(new Scene(root, 200, 400));
 
-        class Ruut extends StackPane{
-            private Ruut(){
-                Rectangle border= new Rectangle(200,200);
-                border.setFill(null);
-                border.setStroke(Color.BLACK);
-                setAlignment(Pos.CENTER);
-                game.getChildren().addAll(border);
-            }
-        }
+
+
+
 
         button.setOnAction(value ->  {
             final Canvas canvas = new Canvas(600,600);
@@ -62,7 +56,7 @@ public class Main extends Application {
 
             for (int i = 0;i<3;i++){
                 for (int j = 0;j<3;j++){
-                    Ruut ruut=new Ruut();
+                    Rectangle ruut = ruut();
                     ruut.setTranslateX(j*200);
                     ruut.setTranslateY(i*200);
 
@@ -79,5 +73,13 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
 
+    }
+    public Rectangle ruut(){
+        Rectangle border= new Rectangle(200,200);
+        border.setFill(null);
+        border.setStroke(Color.BLACK);
+        //setAlignment(Pos.CENTER);
+        //game.getChildren().addAll(border);
+        return border;
     }
 }
