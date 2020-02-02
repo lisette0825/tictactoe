@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
@@ -12,6 +13,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Cell;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -20,7 +22,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.security.KeyStore;
+
 public class Main extends Application {
+
+    private boolean True;
+    private boolean False;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -31,8 +38,8 @@ public class Main extends Application {
         root.setHgap(10);
         root.setVgap(12);
         root.setAlignment(Pos.CENTER);
-        Button button = new Button("Mängima");
-        Button button2 = new Button(".");
+        Button button = new Button("1 mängija");
+        Button button2 = new Button("2 mängijat");
         //button.relocate(50,100);
         HBox hbButtons = new HBox();
         hbButtons.setSpacing(10.0);
@@ -43,32 +50,33 @@ public class Main extends Application {
         //root.add(button2, 0, 1);
         primaryStage.setScene(new Scene(root, 200, 400));
 
-
-
-
-
         button.setOnAction(value ->  {
-            final Canvas canvas = new Canvas(600,600);
+            int RuudustikuLaius= 600;
+            int RuudustikuKõrgus= 600;
+            final Canvas canvas = new Canvas(RuudustikuLaius,RuudustikuKõrgus);
             primaryStage.setScene(new Scene(game, canvas.getWidth(), canvas.getHeight()));
             GraphicsContext gc = canvas.getGraphicsContext2D();
             game.getChildren().add(canvas);
+            canvas.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
+            for (int i = 1;i<3;i++){
 
-
-            for (int i = 0;i<3;i++){
-                for (int j = 0;j<3;j++){
-                    Rectangle ruut = ruut();
-                    ruut.setTranslateX(j*200);
-                    ruut.setTranslateY(i*200);
-
-
-                    game.getChildren().add(ruut);
-                }
+                gc.strokeLine(canvas.getWidth()/3*i,0,canvas.getWidth()/3*i,canvas.getHeight());
+                gc.strokeLine(0,canvas.getHeight()/3*i,canvas.getWidth(),canvas.getHeight()/3*i);
             }
-
+            gc.stroke();
         });
-        //root.getChildren().add(button);
+
         primaryStage.show();
     }
+    //Creating the mouse event handler
+    EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+            System.out.println(e.getX());
+            System.out.println(e.getY());
+        }
+    };
+//Adding event Filter
 
     public static void main(String[] args) {
         launch(args);
