@@ -25,7 +25,8 @@ import javafx.stage.Stage;
 import java.security.KeyStore;
 
 public class Main extends Application {
-
+    private int RuudustikuLaius= 600;
+    private int RuudustikuKõrgus= 600;
     private boolean True;
     private boolean False;
 
@@ -51,8 +52,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 200, 400));
 
         button.setOnAction(value ->  {
-            int RuudustikuLaius= 600;
-            int RuudustikuKõrgus= 600;
+
             final Canvas canvas = new Canvas(RuudustikuLaius,RuudustikuKõrgus);
             primaryStage.setScene(new Scene(game, canvas.getWidth(), canvas.getHeight()));
             GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -72,8 +72,21 @@ public class Main extends Application {
     EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
-            System.out.println(e.getX());
-            System.out.println(e.getY());
+            int x= (int) e.getX();
+            int y= (int) e.getY();
+            int ruutX= RuudustikuLaius/3;
+            int ruutY= RuudustikuKõrgus/3;
+            //<>
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    if (x>ruutX*i && x<ruutX*(i+1) && y>ruutY*j && y<ruutY*(j+1)){
+                        System.out.println(i);
+                        System.out.println(j);
+                    }
+
+                }
+            }
+
         }
     };
 //Adding event Filter
