@@ -27,6 +27,10 @@ import java.security.KeyStore;
 public class Main extends Application {
     private int RuudustikuLaius= 600;
     private int RuudustikuKõrgus= 600;
+    private int[][] ruudustik= new int [3][3];
+    boolean esimesekord=true;
+    Canvas canvas;
+    GraphicsContext gc;
     private boolean True;
     private boolean False;
 
@@ -39,8 +43,8 @@ public class Main extends Application {
         root.setHgap(10);
         root.setVgap(12);
         root.setAlignment(Pos.CENTER);
-        Button button = new Button("1 mängija");
-        Button button2 = new Button("2 mängijat");
+        Button button = new Button("Mängima");
+        Button button2 = new Button("Seaded");
         //button.relocate(50,100);
         HBox hbButtons = new HBox();
         hbButtons.setSpacing(10.0);
@@ -55,7 +59,7 @@ public class Main extends Application {
 
             final Canvas canvas = new Canvas(RuudustikuLaius,RuudustikuKõrgus);
             primaryStage.setScene(new Scene(game, canvas.getWidth(), canvas.getHeight()));
-            GraphicsContext gc = canvas.getGraphicsContext2D();
+            gc = canvas.getGraphicsContext2D();
             game.getChildren().add(canvas);
             canvas.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
             for (int i = 1;i<3;i++){
@@ -64,11 +68,24 @@ public class Main extends Application {
                 gc.strokeLine(0,canvas.getHeight()/3*i,canvas.getWidth(),canvas.getHeight()/3*i);
             }
             gc.stroke();
+
         });
 
         primaryStage.show();
     }
-    //Creating the mouse event handler
+
+    public void drawRist(int x, int y, int ruudupikkus) {
+        double vahe=0.2;
+        gc.strokeLine((x+vahe)*ruudupikkus,(y+vahe)*ruudupikkus,(x+1-vahe)*ruudupikkus,(y+1-vahe)*ruudupikkus);
+        gc.strokeLine((x+1-vahe)*ruudupikkus,(y+vahe)*ruudupikkus,(x+vahe)*ruudupikkus,(y+1-vahe)*ruudupikkus);
+
+    }
+
+    public void drawRing(int x, int y, int ruudupikkus) {
+        double vahe = 0.4;
+        gc.strokeOval((x+vahe/2)*ruudupikkus,(y+vahe/2)*ruudupikkus,ruudupikkus*(1-vahe),ruudupikkus*(1-vahe));
+    }
+
     EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
@@ -76,16 +93,28 @@ public class Main extends Application {
             int y= (int) e.getY();
             int ruutX= RuudustikuLaius/3;
             int ruutY= RuudustikuKõrgus/3;
+
             //<>
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
                     if (x>ruutX*i && x<ruutX*(i+1) && y>ruutY*j && y<ruutY*(j+1)){
                         System.out.println(i);
                         System.out.println(j);
+                        if(esimesekord){
+                            drawRist(i,j,200);
+                            esimesekord=false;
+                        }
+                        else{
+                            drawRing(i,j,200);
+                            esimesekord=true;
+                        }
+
                     }
 
                 }
             }
+
+
 
         }
     };
