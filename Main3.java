@@ -236,11 +236,7 @@ public class Main3 extends Application {
                 stage.setHeight(250);
                 stage.setTitle("VÕITIS RIST!");
                 Button button = new Button("Mängi uuesti");
-                button.setLayoutX(100);
-                button.setLayoutY(100);
                 Button button2 = new Button("Lõpeta");
-                button2.setLayoutX(500);
-                button2.setLayoutY(500);
                 HBox hbox = new HBox(button, button2);
                 hbox.setSpacing(20.0);
                 hbox.setAlignment(Pos.CENTER);
@@ -253,7 +249,7 @@ public class Main3 extends Application {
 
 
             if (d == 2) {
-                System.out.println("TEINE ON NEEGER");
+                System.out.println("TEINE VÕITIS");
                 Stage stage = new Stage();
                 stage.setX(750);
                 stage.setY(300);
@@ -261,11 +257,7 @@ public class Main3 extends Application {
                 stage.setHeight(250);
                 stage.setTitle("VÕITIS RING!");
                 Button button = new Button("Mängi uuesti");
-                button.setLayoutX(100);
-                button.setLayoutY(100);
                 Button button2 = new Button("Lõpeta");
-                button2.setLayoutX(500);
-                button2.setLayoutY(500);
                 HBox hbox = new HBox(button, button2);
                 hbox.setSpacing(20.0);
                 hbox.setAlignment(Pos.CENTER);
