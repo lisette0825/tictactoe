@@ -229,13 +229,19 @@ public class Main extends Application {
 
             if (d == 1) {
                 System.out.println("ESIMENE VÕITIS");
+                gc.setFont(new Font("Franklin Gothic Medium", 100));
+                gc.fillText("RIST VÕITIS", 50, 300);
+
 
 
             }
             if (d == 2) {
-                System.out.println("TEINE ON NEEGER");
+                System.out.println("TEINE VÕITIS");
+                gc.setFont(new Font("Franklin Gothic Medium", 100));
+                gc.fillText("RING VÕITIS", 50, 300);
             } else {
-                System.out.println("Kumbki ei võitnud");
+                System.out.println("VIIK");
+
             }
 
 
