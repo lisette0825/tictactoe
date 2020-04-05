@@ -22,24 +22,26 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
+import javafx.event.ActionEvent;
 
 import java.security.KeyStore;
 import java.util.Arrays;
 
 public class Main extends Application {
+
     private int RuudustikuLaius = 600;
     private int RuudustikuKõrgus = 600;
-    private int[][] ruudustik = new int[3][3];
-    boolean esimesekord = true;
+    int[][] ruudustik = new int[3][3];
+    private boolean esimesekord = true;
     Canvas canvas;
     GraphicsContext gc;
     private boolean True;
     private boolean False;
-    private int d=0;
+    int d = 0;
+    int a=0;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start (Stage primaryStage) throws Exception {
         //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         GridPane root = new GridPane();
         Group game = new Group();
@@ -79,14 +81,14 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    public void drawRist(int x, int y, int ruudupikkus) {
+    public void drawRist ( int x, int y, int ruudupikkus){
         double vahe = 0.2;
         gc.strokeLine((x + vahe) * ruudupikkus, (y + vahe) * ruudupikkus, (x + 1 - vahe) * ruudupikkus, (y + 1 - vahe) * ruudupikkus);
         gc.strokeLine((x + 1 - vahe) * ruudupikkus, (y + vahe) * ruudupikkus, (x + vahe) * ruudupikkus, (y + 1 - vahe) * ruudupikkus);
 
     }
 
-    public void drawRing(int x, int y, int ruudupikkus) {
+    public void drawRing ( int x, int y, int ruudupikkus){
         double vahe = 0.4;
         gc.strokeOval((x + vahe / 2) * ruudupikkus, (y + vahe / 2) * ruudupikkus, ruudupikkus * (1 - vahe), ruudupikkus * (1 - vahe));
     }
@@ -109,12 +111,14 @@ public class Main extends Application {
                         if (ruudustik[i][j] == 0) {
                             if (esimesekord) {
                                 ruudustik[i][j] = 1;
+                                a=a+1;
 
                                 drawRist(i, j, 200);
                                 esimesekord = false;
                             } else {
                                 drawRing(i, j, 200);
                                 ruudustik[i][j] = 2;
+                                a=a+1;
                                 esimesekord = true;
                             }
 
@@ -229,42 +233,96 @@ public class Main extends Application {
 
             if (d == 1) {
                 System.out.println("ESIMENE VÕITIS");
-                gc.setFont(new Font("Franklin Gothic Medium", 100));
-                gc.fillText("RIST VÕITIS", 50, 300);
+                Stage stage = new Stage();
+                stage.setX(750);
+                stage.setY(300);
+                stage.setWidth(400);
+                stage.setHeight(250);
+                stage.setTitle("VÕITIS RIST!");
+                Button button3 = new Button("Mängi uuesti");
+                Button button4 = new Button("Lõpeta");
+                HBox hbox = new HBox(button3, button4);
+                hbox.setSpacing(20.0);
+                hbox.setAlignment(Pos.CENTER);
+                button4.setOnAction(new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent event) {
+                        stage.close();
+                    }
+                });
 
+                Scene scene2 = new Scene(hbox, 600, 600);
+                stage.setScene(scene2);
+                stage.showAndWait();
 
 
             }
+
+
             if (d == 2) {
                 System.out.println("TEINE VÕITIS");
-                gc.setFont(new Font("Franklin Gothic Medium", 100));
-                gc.fillText("RING VÕITIS", 50, 300);
-            } else {
+                Stage stage = new Stage();
+                stage.setX(750);
+                stage.setY(300);
+                stage.setWidth(400);
+                stage.setHeight(250);
+                stage.setTitle("VÕITIS RING!");
+                Button button3 = new Button("Mängi uuesti");
+                Button button4 = new Button("Lõpeta");
+                HBox hbox = new HBox(button3, button4);
+                hbox.setSpacing(20.0);
+                hbox.setAlignment(Pos.CENTER);
+                button3.setOnAction(new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent event) {
+
+                    }
+                });
+                button4.setOnAction(new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent event) {
+                        stage.close();
+                    }
+
+                });
+                Scene scene2 = new Scene(hbox, 600, 600);
+                stage.setScene(scene2);
+                stage.showAndWait();
+
+
+            } if(d==0&&a==9){
+                System.out.println("Kumbki ei võitnud");
                 System.out.println("VIIK");
+                Stage stage = new Stage();
+                stage.setX(750);
+                stage.setY(300);
+                stage.setWidth(400);
+                stage.setHeight(250);
+                stage.setTitle("VIIK!");
+                Button button3 = new Button("Mängi uuesti");
+                Button button4 = new Button("Lõpeta");
+                HBox hbox = new HBox(button3, button4);
+                hbox.setSpacing(20.0);
+                hbox.setAlignment(Pos.CENTER);
+                button3.setOnAction(new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent event) {
+
+                    }
+                });
+                button4.setOnAction(new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent event) {
+                        stage.close();
+                    }
+
+                });
+                Scene scene2 = new Scene(hbox, 600, 600);
+                stage.setScene(scene2);
+                stage.showAndWait();
+
 
             }
 
-
         }
-    }
 
 
+    };
 
 
-            ;
-//Adding event Filter
-
-    public static void main(String[] args) {
-        launch(args);
-
-    }
-
-    public Rectangle ruut() {
-        Rectangle border = new Rectangle(200, 200);
-        border.setFill(null);
-        border.setStroke(Color.BLACK);
-        //setAlignment(Pos.CENTER);
-        //game.getChildren().addAll(border);
-        return border;
-    }
 }
