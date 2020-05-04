@@ -54,10 +54,11 @@ public class Main extends Application {
     int f=0;
     int g=0;
     int c=0;
+    Stage primaryStage = new Stage();
 
 
     @Override
-    public void start (Stage primaryStage) throws Exception {
+    public void start (Stage stage) throws Exception {
         //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         GridPane root = new GridPane();
         Group game = new Group();
@@ -264,7 +265,6 @@ public class Main extends Application {
                     hbox.setAlignment(Pos.CENTER);
                     button3.setOnAction(new EventHandler<ActionEvent>() {
                         public void handle(ActionEvent event) {
-
                             stage.close();
                             a = 0;
                             ruudustik[0][0]=0;
@@ -276,10 +276,11 @@ public class Main extends Application {
                             ruudustik[2][0]=0;
                             ruudustik[2][1]=0;
                             ruudustik[2][2]=0;
+
+
                             f = 0;
                             g = 0;
                             d=0;
-
 
 
 
@@ -293,9 +294,7 @@ public class Main extends Application {
                             }
 
                         }
-
                     });
-
                     button4.setOnAction(new EventHandler<ActionEvent>() {
                         public void handle(ActionEvent event) {
                             System.exit(0);
