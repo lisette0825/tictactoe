@@ -8,10 +8,12 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 
@@ -20,15 +22,15 @@ public class Main extends Application {
 
     private int RuudustikuLaius = 600;
     private int RuudustikuKõrgus = 600;
+    private int RuuduLaius = RuudustikuLaius / 3;
+    private int RuuduKõrgus = RuudustikuKõrgus / 3;
     int[][] ruudustik = new int[3][3];
     private boolean esimesekord = true;
-
-    Canvas canvas;
     GraphicsContext gc;
-    private boolean True;
-    private boolean False;
     private int MituVõituO = 0;
     private int MituVõituX = 0;
+    private int Viike=0;
+    private int Mänge_Võiduni = 1;
     int d = 0;
     int a = 0;
     int f = 0;
@@ -49,6 +51,13 @@ public class Main extends Application {
         ruudustik[2][2] = 0;
     }
 
+    public void Võidetud_Mängud() {
+        gc.setFont(Font.font(30));
+        gc.fillText("X võite:  " + MituVõituX, 650, 200);
+        gc.fillText("O võite:  " + MituVõituO, 650, 300);
+        gc.fillText("Viike:  "+ Viike,650, 400);
+    }
+
     public void loo_mäng() {
         a = 0;
         tühi_ruudustik();
@@ -56,14 +65,15 @@ public class Main extends Application {
         g = 0;
         d = 0;
         Group game = new Group();
-        final Canvas canvas = new Canvas(RuudustikuLaius, RuudustikuKõrgus);
+        final Canvas canvas = new Canvas(800, 600);
         primaryStage.setScene(new Scene(game, canvas.getWidth(), canvas.getHeight()));
         gc = canvas.getGraphicsContext2D();
         game.getChildren().add(canvas);
         canvas.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
+        Võidetud_Mängud();
         for (int i = 1; i < 3; i++) {
-            gc.strokeLine(canvas.getWidth() / 3 * i, 0, canvas.getWidth() / 3 * i, canvas.getHeight());
-            gc.strokeLine(0, canvas.getHeight() / 3 * i, canvas.getWidth(), canvas.getHeight() / 3 * i);
+            gc.strokeLine(RuuduLaius * i, 0, RuuduLaius * i, RuudustikuKõrgus);
+            gc.strokeLine(0, RuuduKõrgus * i, RuudustikuKõrgus, RuuduKõrgus * i);
         }
     }
 
@@ -75,14 +85,17 @@ public class Main extends Application {
         root.setVgap(12);
         root.setAlignment(Pos.CENTER);
         Button button = new Button("Mängima");
-        HBox hbButtons = new HBox();
-        hbButtons.setSpacing(10.0);
-        //<>
-        hbButtons.getChildren().addAll(button);
-        root.add(hbButtons, 0, 0);
-        hbButtons.setAlignment(Pos.CENTER);
-        primaryStage.setScene(new Scene(root, 200, 400));
+        TextField Mänge_Võiduni_Valik = new TextField();
+        Mänge_Võiduni_Valik.setPromptText("Vali mitu mängu võiduni tehakse:");
+        Mänge_Võiduni_Valik.setPrefSize(190, 30);
+        Mänge_Võiduni_Valik.setFocusTraversable(false);
+
+        root.add(Mänge_Võiduni_Valik, 0, 0);
+        root.add(button, 1, 0);
+        primaryStage.setScene(new Scene(root, 400, 200));
+
         button.setOnAction(value -> {
+            Mänge_Võiduni = Integer.parseInt(String.valueOf(Mänge_Võiduni_Valik.getText()));
             loo_mäng();
         });
         primaryStage.show();
@@ -136,7 +149,7 @@ public class Main extends Application {
             loo_mäng();
         });
         button4.setOnAction(event -> System.exit(0));
-        Scene scene2 = new Scene(hbox, 600, 600);
+        Scene scene2 = new Scene(hbox, RuudustikuLaius, RuudustikuKõrgus);
         stage.setScene(scene2);
         stage.showAndWait();
     }
@@ -159,10 +172,10 @@ public class Main extends Application {
                                     if (esimesekord) {
                                         ruudustik[i][j] = 1;
                                         a = a + 1;
-                                        drawRist(i, j, 200);
+                                        drawRist(i, j, RuuduLaius);
                                         esimesekord = false;
                                     } else {
-                                        drawRing(i, j, 200);
+                                        drawRing(i, j, RuuduLaius);
                                         ruudustik[i][j] = 2;
                                         a = a + 1;
                                         esimesekord = true;
@@ -239,26 +252,24 @@ public class Main extends Application {
                     }
                 }
                 if (d >= 1 && d < 4 && a != 0) {
-                    System.out.println("ESIMENE VÕITIS");
                     MituVõituX++;
-                    esimesekord = true;
-                    if (MituVõituX == 3) {
+                    esimesekord = false;
+                    if (MituVõituX == Mänge_Võiduni) {
                         Mäng_läbi(0);
                     } else {
                         voor_läbi = true;
                     }
                 }
                 if (d >= 4 && a != 0) {
-                    System.out.println("TEINE VÕITIS");
                     MituVõituO++;
-                    if (MituVõituO == 3) {
+                    if (MituVõituO == Mänge_Võiduni) {
                         Mäng_läbi(1);
                     } else {
                         voor_läbi = true;
                     }
                 }
                 if (d == 0 && a == 9) {
-                    //Mäng_läbi(2);
+                    Viike++;
                     voor_läbi = true;
                 }
             } else {
