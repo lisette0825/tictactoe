@@ -29,13 +29,10 @@ public class Main extends Application {
     GraphicsContext gc;
     private int MituVõituO = 0;
     private int MituVõituX = 0;
-    private int Viike=0;
+    private int Viike = 0;
     private int Mänge_Võiduni = 1;
     int d = 0;
     int a = 0;
-    int f = 0;
-    int g = 0;
-    int c = 0;
     Stage primaryStage = new Stage();
     boolean voor_läbi = false;
 
@@ -55,14 +52,12 @@ public class Main extends Application {
         gc.setFont(Font.font(30));
         gc.fillText("X võite:  " + MituVõituX, 650, 200);
         gc.fillText("O võite:  " + MituVõituO, 650, 300);
-        gc.fillText("Viike:  "+ Viike,650, 400);
+        gc.fillText("Viike:  " + Viike, 650, 400);
     }
 
     public void loo_mäng() {
         a = 0;
         tühi_ruudustik();
-        f = 0;
-        g = 0;
         d = 0;
         Group game = new Group();
         final Canvas canvas = new Canvas(800, 600);
@@ -86,16 +81,20 @@ public class Main extends Application {
         root.setAlignment(Pos.CENTER);
         Button button = new Button("Mängima");
         TextField Mänge_Võiduni_Valik = new TextField();
-        Mänge_Võiduni_Valik.setPromptText("Vali mitu mängu võiduni tehakse:");
+        Mänge_Võiduni_Valik.setPromptText("Vali mitu mängu tehakse:");
         Mänge_Võiduni_Valik.setPrefSize(190, 30);
         Mänge_Võiduni_Valik.setFocusTraversable(false);
-
         root.add(Mänge_Võiduni_Valik, 0, 0);
         root.add(button, 1, 0);
         primaryStage.setScene(new Scene(root, 400, 200));
 
         button.setOnAction(value -> {
+
             Mänge_Võiduni = Integer.parseInt(String.valueOf(Mänge_Võiduni_Valik.getText()));
+            if(Mänge_Võiduni==0){
+                Mänge_Võiduni=1;
+            }
+
             loo_mäng();
         });
         primaryStage.show();
@@ -119,7 +118,7 @@ public class Main extends Application {
     public void Mäng_läbi(int tulemus) {
         MituVõituO = 0;
         MituVõituX = 0;
-        c = 1;
+        Viike = 0;
         Stage stage = new Stage();
         stage.setX(750);
         stage.setY(300);
@@ -143,8 +142,6 @@ public class Main extends Application {
             stage.close();
             a = 0;
             tühi_ruudustik();
-            f = 0;
-            g = 0;
             d = 0;
             loo_mäng();
         });
@@ -162,11 +159,8 @@ public class Main extends Application {
                 int y = (int) e.getY();
                 int ruutX = RuudustikuLaius / 3;
                 int ruutY = RuudustikuKõrgus / 3;
-                //<>
-                String[] lõpeta = new String[8];
-                for (int p = 0; p < 1; p++) {
-                    for (int i = f; i < 3; i++) {
-                        for (int j = g; j < 3; j++) {
+                    for (int i = 0; i < 3; i++) {
+                        for (int j = 0; j < 3; j++) {
                             if (x > ruutX * i && x < ruutX * (i + 1) && y > ruutY * j && y < ruutY * (j + 1) && d == 0) {
                                 if (ruudustik[i][j] == 0) {
                                     if (esimesekord) {
@@ -250,27 +244,73 @@ public class Main extends Application {
                             }
                         }
                     }
-                }
+
+
                 if (d >= 1 && d < 4 && a != 0) {
+                    System.out.println("X VÕITIS");
                     MituVõituX++;
                     esimesekord = false;
-                    if (MituVõituX == Mänge_Võiduni) {
-                        Mäng_läbi(0);
+                    if (MituVõituX + MituVõituO + Viike == Mänge_Võiduni) {
+                        if (MituVõituO > MituVõituX && MituVõituO >= Viike) {
+                            Mäng_läbi(1);
+                        }
+                        if (MituVõituX > MituVõituO && MituVõituX >= Viike) {
+                            Mäng_läbi(0);
+                        }
+                        if (Viike > MituVõituX && Viike > MituVõituO) {
+                            Mäng_läbi(2);
+                        }
+                        if (MituVõituO == MituVõituX && MituVõituO != 0) {
+                            Mäng_läbi(2);
+                        }
+
+
                     } else {
                         voor_läbi = true;
                     }
                 }
                 if (d >= 4 && a != 0) {
+                    System.out.println("O VÕITIS");
                     MituVõituO++;
-                    if (MituVõituO == Mänge_Võiduni) {
-                        Mäng_läbi(1);
+                    if (MituVõituO + MituVõituX + Viike == Mänge_Võiduni) {
+                        if (MituVõituO > MituVõituX && MituVõituO >= Viike) {
+                            Mäng_läbi(1);
+                        }
+                        if (MituVõituX > MituVõituO && MituVõituX >= Viike) {
+                            Mäng_läbi(0);
+                        }
+                        if (Viike > MituVõituX && Viike > MituVõituO) {
+                            Mäng_läbi(2);
+                        }
+                        if (MituVõituO == MituVõituX && MituVõituO != 0) {
+                            Mäng_läbi(2);
+                        }
+
+
                     } else {
                         voor_läbi = true;
                     }
                 }
                 if (d == 0 && a == 9) {
                     Viike++;
-                    voor_läbi = true;
+                    if (MituVõituO + MituVõituX + Viike == Mänge_Võiduni) {
+                        if (MituVõituO > MituVõituX && MituVõituO >= Viike) {
+                            Mäng_läbi(1);
+                        }
+                        if (MituVõituX > MituVõituO && MituVõituX >= Viike) {
+                            Mäng_läbi(0);
+                        }
+                        if (Viike > MituVõituX && Viike > MituVõituO) {
+                            Mäng_läbi(2);
+                        }
+                        if (MituVõituO == MituVõituX && MituVõituO != 0) {
+                            Mäng_läbi(2);
+                        }
+
+
+                    } else {
+                        voor_läbi = true;
+                    }
                 }
             } else {
                 voor_läbi = false;
